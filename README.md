@@ -202,4 +202,4 @@ The Taipalus taxonomy used for error classification is described in:
 ## Author
 
 Dhrubajotee Howlader
-Master's in Artificial Intelligence, University of Jyväskylä
+University of Jyväskylä
