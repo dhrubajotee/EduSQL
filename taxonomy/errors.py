@@ -102,10 +102,12 @@ S6 = ErrorRule(
     category='PG-SYN',
     label='DISTINCT ON without ORDER BY',
     message=(
-        "You used DISTINCT ON without an ORDER BY clause. In PostgreSQL, "
-        "DISTINCT ON requires an ORDER BY clause that begins with the same "
-        "expression used in DISTINCT ON. Without ORDER BY, PostgreSQL cannot "
-        "determine which row to keep from each group, and will raise an error.\n\n"
+        "You used DISTINCT ON without an ORDER BY clause. PostgreSQL " 
+        "typically expects DISTINCT ON queries to be paired with an " 
+        "ORDER BY clause that determines which row is kept from each "
+        "group. Without ORDER BY, the query still executes, but the "
+        "selected rows are non-deterministic and may vary between "
+        "executions. \n\n"
         "Example fix:\n"
         "  SELECT DISTINCT ON (dept_id) name, dept_id\n"
         "  FROM employees\n"
