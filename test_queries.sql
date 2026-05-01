@@ -91,7 +91,7 @@ WHERE salary = (SELECT salary FROM employees);
 
 -- R9: Missing FROM-clause entry for table (SYN-2)
 SELECT e.name FROM employees
-WHERE departments.dept_id = employees.dept_id;
+WHERE departments.dept = employees.dept;
 
 -- R10: DISTINCT ON expressions must match ORDER BY (PG-SYN)
 -- Note: caught by S7 in Phase 1 if static analysis runs first
