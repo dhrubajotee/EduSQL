@@ -134,7 +134,7 @@ Query executed successfully. No errors detected.
 
 ## Rule coverage
 
-### Phase 1 — Static rules
+### Phase 1 - Static rules
 
 | Rule | Category | Description |
 |------|----------|-------------|
@@ -149,7 +149,7 @@ Query executed successfully. No errors detected.
 | S9 | PG-SYN | Recursive CTE missing RECURSIVE keyword |
 | S10 | PG-SYN | LATERAL subquery without outer reference |
 
-### Phase 2 — Runtime rules
+### Phase 2 - Runtime rules
 
 | Rule | Category | Description |
 |------|----------|-------------|
