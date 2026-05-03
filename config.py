@@ -1,6 +1,4 @@
 """
-config.py
-=========
 PostgreSQL connection settings for EduSQL.
 Update these values to match your local PostgreSQL installation.
 """
