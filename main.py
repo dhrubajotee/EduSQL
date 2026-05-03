@@ -25,14 +25,14 @@ def run(query: str, verbose: bool = True) -> dict:
             feedback_parts.append(error['feedback'])
 
         full_feedback = (
-            f"EduSQL found {len(static_errors)} issue(s) in your query "
+            f"EduSQL found {len(static_errors)} {'issue' if len(static_errors) == 1 else 'issues'} in your query "
             f"before execution:\n\n" +
             "\n\n".join(feedback_parts)
         )
 
         if verbose:
             print("=" * 60)
-            print("PHASE 1 — Static Analysis")
+            print("PHASE 1 - Static Analysis")
             print("=" * 60)
             print(full_feedback)
 
@@ -94,7 +94,6 @@ def run(query: str, verbose: bool = True) -> dict:
 
 
 def main():
-    """Interactive command line interface for EduSQL."""
     print("=" * 60)
     print("Welcome to EduSQL")
     print("A PostgreSQL-specific SQL error feedback tool")

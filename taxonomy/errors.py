@@ -26,7 +26,7 @@ S1 = ErrorRule(
         
         "Example fix:\n"
         "  Instead of: WHERE COUNT(*) > 5\n"
-        "  Use:        GROUP BY column_name HAVING COUNT(*) > 5"
+        "  Use: GROUP BY column_name HAVING COUNT(*) > 5"
     ),
     phase=1
 )
