@@ -53,10 +53,29 @@ CREATE TABLE public.employees (
     salary  INTEGER
 );
 
+CREATE TABLE public.departments (
+    id      INTEGER NOT NULL,
+    name    CHARACTER VARYING(50),
+    budget  INTEGER
+);
+
 INSERT INTO public.employees VALUES (1, 'Alice', 'IT', 6000);
 INSERT INTO public.employees VALUES (2, 'Bob',   'HR', 4000);
 INSERT INTO public.employees VALUES (3, 'Carol', 'IT', 7000);
 INSERT INTO public.employees VALUES (4, 'David', 'HR', 3500);
+INSERT INTO public.employees VALUES (5, 'Eve', 'IT', 9000);
+INSERT INTO public.employees VALUES (6, 'Frank', 'Finance', 5500);
+INSERT INTO public.employees VALUES (7, 'Grace', 'HR', NULL);
+INSERT INTO public.employees VALUES (8, 'Hank', 'Finance', 4800);
+INSERT INTO public.employees VALUES (9, 'Iris', 'IT', 7500);
+INSERT INTO public.employees VALUES (10, 'Jack', 'HR', 3800);
+INSERT INTO public.employees VALUES (11, 'Karen', 'Finance', 6200);
+INSERT INTO public.employees VALUES (12, 'Leo', 'IT', 8100);
+
+
+INSERT INTO public.departments VALUES (1, 'IT', 120000);
+INSERT INTO public.departments VALUES (2, 'HR', 80000);
+INSERT INTO public.departments VALUES (3, 'Finance', 95000);
 ```
 
 ---
