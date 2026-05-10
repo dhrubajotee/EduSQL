@@ -200,7 +200,6 @@ R1 = ErrorRule(
         "  - Check the spelling of the column name\n"
         "  - Make sure the column exists in the table you are querying\n"
         "  - If using aliases, make sure you are using the alias correctly\n"
-        "  - Column names in PostgreSQL are case-sensitive when quoted"
     ),
     phase=2
 )
@@ -217,7 +216,6 @@ R2 = ErrorRule(
         "  - Check the spelling of the table name\n"
         "  - Make sure the table exists in the current database\n"
         "  - If the table is in a specific schema, use schema.table notation\n"
-        "  - Table names in PostgreSQL are case-sensitive when quoted"
     ),
     phase=2
 )
