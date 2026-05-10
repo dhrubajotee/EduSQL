@@ -59,10 +59,10 @@ LATERAL (SELECT AVG(salary) FROM employees) sub;
 -- PHASE 2 - RUNTIME RULES
 
 -- R1: Column does not exist (SYN-2)
-SELECT non_existing_column FROM employees;
+SELECT student FROM employees;
 
 -- R2: Relation does not exist (SYN-2)
-SELECT non_existing_column FROM empower;
+SELECT student FROM empower;
 
 -- R3: Data type mismatch - operator does not exist (SYN-3)
 SELECT * FROM employees
