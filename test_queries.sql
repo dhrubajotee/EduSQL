@@ -269,6 +269,7 @@ SELECT * FROM dept_summary;
 
 
 -- S10: LATERAL subquery without outer reference (PG-SYN)
+-- Error Variant 1
 SELECT * FROM employees e, LATERAL (SELECT AVG(salary) FROM employees) sub;
 
 -- Error Variant 2
@@ -319,8 +320,7 @@ SELECT nmae FROM employees;
 SELECT titel FROM projects;
 
 -- Error Variant 4
-SELECT name FROM employees
-WHERE wage > 5000;
+SELECT name FROM employees WHERE wage > 5000;
 
 -- Correct Variant 1
 SELECT name FROM employees;
@@ -329,8 +329,7 @@ SELECT name FROM employees;
 SELECT title FROM projects;
 
 -- Correct Variant 3
-SELECT name FROM employees
-WHERE salary > 5000;
+SELECT name FROM employees WHERE salary > 5000;
 
 
 
@@ -527,7 +526,6 @@ SELECT p.title FROM projects WHERE e.dept = 'IT';
 
 -- Error Variant 3
 SELECT e.name, p.title FROM employees e WHERE p.dept = e.dept;
-
 
 -- Error Variant 4
 SELECT emp.name FROM employees WHERE emp.salary > 5000;
