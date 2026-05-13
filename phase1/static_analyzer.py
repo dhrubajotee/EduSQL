@@ -81,19 +81,27 @@ class StaticAnalyzer:
             "feedback": feedback
             }
 
-    
-    # S1 - Aggregate function in WHERE clause   
     def _detect_s1(self, ast, query: str) -> list[dict]:
         results = []
         aggregate_types = (exp.Count, exp.Sum, exp.Avg, exp.Min, exp.Max)
 
         for where_clause in ast.find_all(exp.Where):
             for agg in where_clause.find_all(*aggregate_types):
+                # Skip aggregates inside subqueries within WHERE
+                parent = agg.parent
+                is_inside_subquery = False
+                while parent is not None and not isinstance(parent, exp.Where):
+                    if isinstance(parent, exp.Subquery):
+                        is_inside_subquery = True
+                        break
+                    parent = parent.parent
+                if is_inside_subquery:
+                    continue
                 results.append(self._build_result(
                     S1,
                     f"Found '{agg.sql()}' inside WHERE clause"
                 ))
-                break  # one error per WHERE clause is enough
+                break
 
         return results
 
@@ -330,48 +338,50 @@ class StaticAnalyzer:
             return results
 
         for select in ast.find_all(exp.Select):
-            # Collect outer table aliases from FROM and JOINs
+
+            # Check if this SELECT has any LATERAL join
+            lateral_joins = [
+                join for join in select.find_all(exp.Join)
+                if join.find(exp.Lateral)
+            ]
+            if not lateral_joins:
+                continue
+
+            # Collect outer aliases from FROM clause main table
             outer_aliases = set()
 
-            from_clause = select.args.get('from')
-            if from_clause:
-                for tbl in from_clause.find_all(exp.Table):
-                    alias = tbl.args.get('alias')
-                    if alias:
-                        outer_aliases.add(alias.name.lower())
-                    else:
-                        outer_aliases.add(tbl.name.lower())
+            from_clause = select.args.get('from_')
+            if from_clause and isinstance(from_clause.this, exp.Table):
+                tbl = from_clause.this
+                alias = tbl.alias or tbl.name
+                if alias:
+                    outer_aliases.add(alias.lower())
 
-            # Also collect from JOIN nodes
+            # Collect aliases from non-LATERAL joins only
             for join in select.find_all(exp.Join):
-                # Skip the LATERAL join itself
                 if join.find(exp.Lateral):
                     continue
                 for tbl in join.find_all(exp.Table):
-                    alias = tbl.args.get('alias')
+                    alias = tbl.alias or tbl.name
                     if alias:
-                        outer_aliases.add(alias.name.lower())
-                    else:
-                        outer_aliases.add(tbl.name.lower())
+                        outer_aliases.add(alias.lower())
 
-            # Now find LATERAL nodes inside JOINs
-            for join in select.find_all(exp.Join):
+            # For each LATERAL join, check if its SQL references any outer alias
+            for join in lateral_joins:
                 lateral = join.find(exp.Lateral)
-                if lateral is None:
+                if not lateral:
                     continue
 
-                subquery = lateral.find(exp.Subquery)
-                if subquery is None:
-                    continue
+                # Use SQL text — simpler and more reliable than AST traversal
+                lateral_sql = lateral.sql().lower()
 
-                # Collect table references inside LATERAL subquery
-                inner_refs = set()
-                for col in subquery.find_all(exp.Column):
-                    tbl_ref = col.args.get('table')
-                    if tbl_ref:
-                        inner_refs.add(tbl_ref.name.lower())
+                has_outer_ref = any(
+                    f"{alias}." in lateral_sql
+                    for alias in outer_aliases
+                    if alias
+                )
 
-                if not inner_refs.intersection(outer_aliases):
+                if not has_outer_ref:
                     results.append(self._build_result(
                         S10,
                         "LATERAL subquery does not reference any outer table column"

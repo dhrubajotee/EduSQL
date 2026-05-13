@@ -112,16 +112,6 @@ class RuntimeEnhancer:
                 return rule
         return None
 
-    # def _build_feedback(self, rule: ErrorRule, raw_error: str) -> str:
-        
-    #     return (
-    #         f"[{rule.rule_id}] {rule.label}\n"
-    #         f"Taxonomy category: {rule.category}\n"
-    #         f"{'-' * 50}\n"
-    #         f"{rule.message}\n"
-    #         f"{'-' * 50}\n"
-    #         f"Original PostgreSQL error:\n{raw_error}"
-    #     )
 
     def _build_feedback(self, rule: ErrorRule, raw_error: str) -> str:
         message = self._personalise_message(rule, raw_error)
@@ -143,8 +133,7 @@ class RuntimeEnhancer:
                 return (
                     f'PostgreSQL could not find the column "{col}". '
                     f"Check for spelling mistakes, make sure the column belongs to a table "
-                    f"in your FROM clause, and remember that column names are case-sensitive "
-                    f"unless quoted."
+                    f"in your FROM clause"
                 )
 
         if rule.rule_id == "R2":
@@ -163,8 +152,9 @@ class RuntimeEnhancer:
                 token = match.group(1)
                 return (
                     f'PostgreSQL found a syntax error near "{token}". '
-                    f"Check for a missing comma before this token, an extra or missing "
-                    f"parenthesis, or a misspelled keyword."
+                    f"Common causes include an extra or missing comma, an unbalanced "
+                    f"parenthesis, a misspelled or misplaced keyword, or incorrect "
+                    f"clause order. Review the query structure around this token."
                 )
 
         if rule.rule_id == "R9":

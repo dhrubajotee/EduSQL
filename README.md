@@ -39,7 +39,7 @@ pip install sqlglot psycopg2 sqlparse
 
 ## Database setup
 
-EduSQL requires a PostgreSQL database to exist before Phase 2 can run. Create one and set up a test table:
+EduSQL requires a PostgreSQL database to exist before Phase 2 can run. Create one and set up test table:
 
 ```sql
 CREATE DATABASE thesis_test;
@@ -59,6 +59,14 @@ CREATE TABLE public.departments (
     budget  INTEGER
 );
 
+CREATE TABLE public.projects (
+    id      INTEGER NOT NULL,
+    title   CHARACTER VARYING(100),
+    dept    CHARACTER VARYING(50),
+    budget  INTEGER
+);
+
+
 INSERT INTO public.employees VALUES (1, 'Alice', 'IT', 6000);
 INSERT INTO public.employees VALUES (2, 'Bob',   'HR', 4000);
 INSERT INTO public.employees VALUES (3, 'Carol', 'IT', 7000);
@@ -76,6 +84,13 @@ INSERT INTO public.employees VALUES (12, 'Leo', 'IT', 8100);
 INSERT INTO public.departments VALUES (1, 'IT', 120000);
 INSERT INTO public.departments VALUES (2, 'HR', 80000);
 INSERT INTO public.departments VALUES (3, 'Finance', 95000);
+
+
+INSERT INTO public.projects VALUES (1, 'Alpha', 'IT', 50000);
+INSERT INTO public.projects VALUES (2, 'Beta', 'HR', 30000);
+INSERT INTO public.projects VALUES (3, 'Gamma', 'Finance', 45000);
+INSERT INTO public.projects VALUES (4, 'Delta', 'IT', 60000);
+
 ```
 
 ---
